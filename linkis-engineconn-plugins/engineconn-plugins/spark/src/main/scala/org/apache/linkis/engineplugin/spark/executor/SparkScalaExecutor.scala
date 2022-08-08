@@ -267,7 +267,8 @@ class SparkScalaExecutor(sparkEngineSession: SparkEngineSession, id: Long) exten
   }
 
   protected def getField(obj: Object, name: String): Object = {
-    val field = obj.getClass.getField(name)
+    //val field = obj.getClass.getField(name)
+    val field = obj.getClass.getDeclaredField("in0")
     field.setAccessible(true)
     field.get(obj)
   }
