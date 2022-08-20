@@ -22,22 +22,17 @@ import org.apache.linkis.manager.common.protocol.bml.BmlResource
 import org.apache.linkis.manager.engineplugin.common.conf.{EngineConnPluginConf, EnvConfiguration}
 import org.apache.linkis.manager.engineplugin.common.conf.EnvConfiguration.LINKIS_PUBLIC_MODULE_PATH
 import org.apache.linkis.manager.engineplugin.common.exception.EngineConnBuildFailedException
-import org.apache.linkis.manager.engineplugin.common.launch.entity.{
-  EngineConnBuildRequest,
-  RicherEngineConnBuildRequest
-}
+import org.apache.linkis.manager.engineplugin.common.launch.entity.{EngineConnBuildRequest, RicherEngineConnBuildRequest}
 import org.apache.linkis.manager.engineplugin.common.launch.process.Environment.{variable, _}
 import org.apache.linkis.manager.engineplugin.common.launch.process.LaunchConstants._
 import org.apache.linkis.manager.label.entity.engine.EngineTypeLabel
-
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DateFormatUtils
-
 import java.io.File
 import java.nio.file.Paths
 import java.util
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 
 abstract class JavaProcessEngineConnLaunchBuilder
@@ -68,11 +63,12 @@ abstract class JavaProcessEngineConnLaunchBuilder
     commandLine += ("-Xmx" + engineConnMemory)
     // commandLine += ("-Xms" + engineConnMemory)
     val javaOPTS = getExtractJavaOpts
-    if (StringUtils.isNotEmpty(EnvConfiguration.ENGINE_CONN_DEFAULT_JAVA_OPTS.getValue))
+    if (StringUtils.isNotEmpty(EnvConfiguration.ENGINE_CONN_DEFAULT_JAVA_OPTS.getValue)) {
       EnvConfiguration.ENGINE_CONN_DEFAULT_JAVA_OPTS.getValue
         .format(getGcLogDir(engineConnBuildRequest))
         .split("\\s+")
         .foreach(commandLine += _)
+    }
     if (StringUtils.isNotEmpty(javaOPTS)) javaOPTS.split("\\s+").foreach(commandLine += _)
     getLogDir(engineConnBuildRequest).trim.split(" ").foreach(commandLine += _)
     commandLine += ("-Djava.io.tmpdir=" + variable(TEMP_DIRS))
@@ -114,7 +110,7 @@ abstract class JavaProcessEngineConnLaunchBuilder
       addPathToClassPath(environment, Seq(LINKIS_PUBLIC_MODULE_PATH.getValue + "/*"))
     }
     // finally, add the suitable properties key to classpath
-    engineConnBuildRequest.engineConnCreationDesc.properties.foreach { case (key, value) =>
+    engineConnBuildRequest.engineConnCreationDesc.properties.asScala.foreach { case (key, value) =>
       if (
           key.startsWith("engineconn.classpath") || key.startsWith(
             "wds.linkis.engineconn.classpath"
@@ -137,9 +133,9 @@ abstract class JavaProcessEngineConnLaunchBuilder
         }
 
         val configs: util.Map[String, String] =
-          richer.getStartupConfigs.filter(_._2.isInstanceOf[String]).map { case (k, v: String) =>
+          richer.getStartupConfigs.asScala.filter(_._2.isInstanceOf[String]).map { case (k, v: String) =>
             k -> v
-          }
+          }.asJava
         val jars: String = EnvConfiguration.ENGINE_CONN_JARS.getValue(configs)
         addFiles(jars)
         val files: String = EnvConfiguration.ENGINE_CONN_CLASSPATH_FILES.getValue(configs)
@@ -167,7 +163,7 @@ abstract class JavaProcessEngineConnLaunchBuilder
   override protected def getBmlResources(implicit
       engineConnBuildRequest: EngineConnBuildRequest
   ): util.List[BmlResource] = {
-    val engineType = engineConnBuildRequest.labels
+    val engineType = engineConnBuildRequest.labels.asScala
       .find(_.isInstanceOf[EngineTypeLabel])
       .map { case engineTypeLabel: EngineTypeLabel => engineTypeLabel }
       .getOrElse(
@@ -178,7 +174,7 @@ abstract class JavaProcessEngineConnLaunchBuilder
       engineConnResource.getConfBmlResource,
       engineConnResource.getLibBmlResource
     ) ++: engineConnResource.getOtherBmlResources.toList
-  }
+  }.asJava
 
   private implicit def buildPath(paths: Seq[String]): String =
     Paths.get(paths.head, paths.tail: _*).toFile.getPath
