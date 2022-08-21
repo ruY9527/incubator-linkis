@@ -144,16 +144,23 @@ case class ProxyGatewayWebSocketSession(
     serviceInstance: ServiceInstance,
     startTime: Long
 ) extends GatewayWebSocketSession(webSocketSession) {
-  private var lastPingTime = System.currentTimeMillis
+  private var lastPingTime: Long = System.currentTimeMillis
 
-  override def equals(obj: scala.Any): Boolean = if (obj == null) false
-  else
-    obj match {
-      case w: ProxyGatewayWebSocketSession =>
-        if (w.webSocketSession != null) webSocketSession.getId == w.webSocketSession.getId
-        else false
-      case _ => false
+   override def equals(obj: Any): Boolean = {
+    if (obj == null) {
+      false
+    } else {
+      obj match {
+        case w: ProxyGatewayWebSocketSession =>
+          if (w.webSocketSession != null) webSocketSession.getId == w.webSocketSession.getId
+          else false
+        case _ => false
+      }
     }
+  }
+
+
+  override def hashCode(): Int = super.hashCode()
 
   def heartbeat(pingMsg: WebSocketMessage): Unit =
     if (System.currentTimeMillis - lastPingTime >= SPRING_CLOUD_GATEWAY_WEBSOCKET_HEARTBEAT) {
