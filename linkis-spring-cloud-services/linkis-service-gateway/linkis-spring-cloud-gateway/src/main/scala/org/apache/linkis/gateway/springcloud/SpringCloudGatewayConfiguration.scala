@@ -147,7 +147,7 @@ class SpringCloudGatewayConfiguration {
       RibbonUtils.isSecure(config, serverIntrospector, server)
     }
 
-     def serverIntrospectorFun(serviceId: String) = {
+    def serverIntrospectorFun(serviceId: String) = {
       var serverIntrospector =
         springClientFactory.getInstance(serviceId, classOf[ServerIntrospector])
       if (serverIntrospector == null) serverIntrospector = new DefaultServerIntrospector
@@ -159,7 +159,8 @@ class SpringCloudGatewayConfiguration {
         val serviceInstance = getServiceInstance(serviceId)
         logger.info("redirect to " + serviceInstance)
         val lb = this.getLoadBalancer(serviceInstance.getApplicationName)
-        val server = lb.getAllServers.asScala.find(_.getHostPort == serviceInstance.getInstance).get
+        val server =
+          lb.getAllServers.asScala.find(_.getHostPort == serviceInstance.getInstance).get
         new RibbonLoadBalancerClient.RibbonServer(
           serviceId,
           server,

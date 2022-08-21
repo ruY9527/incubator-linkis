@@ -146,7 +146,7 @@ case class ProxyGatewayWebSocketSession(
 ) extends GatewayWebSocketSession(webSocketSession) {
   private var lastPingTime: Long = System.currentTimeMillis
 
-   override def equals(obj: Any): Boolean = {
+  override def equals(obj: Any): Boolean = {
     if (obj == null) {
       false
     } else {
@@ -158,7 +158,6 @@ case class ProxyGatewayWebSocketSession(
       }
     }
   }
-
 
   override def hashCode(): Int = super.hashCode()
 
