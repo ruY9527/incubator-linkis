@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component
 import java.util.Base64
 import java.util.regex.Pattern
 
-//@Component
+// @Component
 class DefaultInstanceAliasConverter extends InstanceAliasConverter {
 
   val pattern = Pattern.compile("[a-zA-Z\\d=\\+/]+")
