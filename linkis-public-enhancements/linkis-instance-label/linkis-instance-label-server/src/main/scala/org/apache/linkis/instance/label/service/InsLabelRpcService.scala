@@ -28,7 +28,7 @@ trait InsLabelRpcService {
    *   request
    */
   def attachLabelsToInstance(sender: Sender, insLabelAttachRequest: InsLabelAttachRequest): Unit =
-    ???
+    null
 
   /**
    * Refresh labels
@@ -38,7 +38,7 @@ trait InsLabelRpcService {
   def refreshLabelsToInstance(
       sender: Sender,
       insLabelRefreshRequest: InsLabelRefreshRequest
-  ): Unit = ???
+  ): Unit = null
 
   /**
    * Remove labels
@@ -48,7 +48,7 @@ trait InsLabelRpcService {
   def removeLabelsFromInstance(
       sender: Sender,
       insLabelRemoveRequest: InsLabelRemoveRequest
-  ): Unit = ???
+  ): Unit = null
 
   def queryLabelsFromInstance(
       sender: Sender,
