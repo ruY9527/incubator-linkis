@@ -22,10 +22,10 @@ import org.apache.linkis.common.conf.{CommonVars, TimeType}
 object EntranceConfiguration {
 
   val ENTRANCE_SCHEDULER_MAX_PARALLELISM_USERS =
-    CommonVars("wds.linkis.entrance.scheduler.maxParallelismUsers", new Integer(1000))
+    CommonVars("wds.linkis.entrance.scheduler.maxParallelismUsers", 1000)
 
   val ENTRANCE_LISTENER_BUS_EVENT_QUEUE_CAPACITY =
-    CommonVars("wds.linkis.entrance.listenerBus.queue.capacity", new Integer(5000))
+    CommonVars("wds.linkis.entrance.listenerBus.queue.capacity", 5000)
 
   val JOB_MAX_PERSIST_WAIT_TIME =
     CommonVars("wds.linkis.entrance.job.persist.wait.max", new TimeType("5m"))

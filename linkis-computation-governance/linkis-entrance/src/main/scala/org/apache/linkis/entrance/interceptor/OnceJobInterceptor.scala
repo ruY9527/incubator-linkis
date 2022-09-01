@@ -63,7 +63,8 @@ class OnceJobInterceptor extends EntranceInterceptor {
     val jobLabel =
       LabelBuilderFactoryContext.getLabelBuilderFactory.createLabel(classOf[JobLabel])
     jobLabel.setJobId(task.getId.toString)
-    task.getLabels.add(jobLabel)
+    import scala.collection.JavaConverters._
+    task.getLabels.asScala.add(jobLabel)
     val onceExecutorContent = new OnceExecutorContent
     val params = task.getParams.map { case (k, v) => k -> v.asInstanceOf[Any] }
     implicit def toMap(map: util.Map[String, Any]): util.Map[String, Object] = map.map {

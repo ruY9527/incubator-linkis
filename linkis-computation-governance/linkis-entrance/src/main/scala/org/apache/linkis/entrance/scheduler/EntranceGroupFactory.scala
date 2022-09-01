@@ -188,8 +188,9 @@ object EntranceGroupFactory {
           runtime.get(TaskConstant.READ_FROM_CACHE) != null && runtime
             .get(TaskConstant.READ_FROM_CACHE)
             .asInstanceOf[Boolean]
-      ) CACHE
-      else ""
+      ) {
+        CACHE
+      } else ""
     if (StringUtils.isNotEmpty(creator)) creator + "_" + user + cache
     else EntranceConfiguration.DEFAULT_REQUEST_APPLICATION_NAME.getValue + "_" + user + cache
   }
@@ -223,8 +224,9 @@ object EntranceGroupFactory {
             runtime.get(TaskConstant.READ_FROM_CACHE) != null && runtime
               .get(TaskConstant.READ_FROM_CACHE)
               .asInstanceOf[Boolean]
-        ) CACHE
-        else ""
+        ) {
+          CACHE
+        } else ""
       val groupName =
         userCreatorLabel.getCreator + "_" + userCreatorLabel.getUser + "_" + engineTypeLabel.getEngineType + cache
       groupName

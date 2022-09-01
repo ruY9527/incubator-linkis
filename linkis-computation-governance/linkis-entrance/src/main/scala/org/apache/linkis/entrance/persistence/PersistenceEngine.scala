@@ -52,8 +52,8 @@ trait PersistenceEngine extends Closeable with Flushable {
 
   /**
    * Return a task information in the database through a taskID, such as query log storage address,
-   * etc. 通过一个taskID，返回数据库中的一条task信息，这种情况包括如 查询日志存放地址等
-   * @param taskID
+   * etc. 通过一个jobGroupId，返回数据库中的一条task信息，这种情况包括如 查询日志存放地址等
+   * @param jobGroupId
    * @return
    */
   @throws[ErrorException]

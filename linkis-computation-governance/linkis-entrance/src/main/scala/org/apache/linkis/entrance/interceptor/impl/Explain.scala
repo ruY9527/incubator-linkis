@@ -31,6 +31,7 @@ import org.apache.linkis.governance.common.entity.job.JobRequest
 
 import org.apache.commons.lang3.StringUtils
 
+import java.util.Locale
 import java.util.regex.Pattern
 
 import scala.collection.mutable.ArrayBuffer
@@ -130,11 +131,12 @@ object SQLExplain extends Explain {
       logger.warn("sql limit check error happens")
       executionCode.contains(IDE_ALLOW_NO_LIMIT)
     }
-    if (isNoLimitAllowed)
+    if (isNoLimitAllowed) {
       logAppender.append(
         LogUtils
           .generateWarn("please pay attention ,SQL full export mode opened(请注意,SQL全量导出模式打开)\n")
       )
+    }
     if (tempCode.contains("""\;""")) {
       val semicolonIndexes = findRealSemicolonIndex(tempCode)
       var oldIndex = 0
@@ -227,10 +229,10 @@ object SQLExplain extends Explain {
     // 如果一段sql是 --xxx回车select * from default.users，那么他也是select语句
     val realCode = cleanComment(code)
     // 以前，在判断，对于select* from xxx这样的SQL时会出现问题的，但是这种语法hive是支持的
-    realCode.trim.split("\\s+")(0).toLowerCase.contains("select")
+    realCode.trim.split("\\s+")(0).toLowerCase(Locale.getDefault).contains("select")
   }
 
-  def continueWhenError = false
+  def continueWhenError: Boolean = false
 
   def isSelectCmdNoLimit(cmd: String): Boolean = {
     if (StringUtils.isEmpty(cmd)) {
@@ -256,8 +258,9 @@ object SQLExplain extends Explain {
   private def cleanComment(sql: String): String = {
     val cleanSql = new StringBuilder
     sql.trim.split(LINE_BREAK) foreach { singleSql =>
-      if (!singleSql.trim().startsWith(COMMENT_FLAG))
+      if (!singleSql.trim().startsWith(COMMENT_FLAG)) {
         cleanSql.append(singleSql).append(LINE_BREAK)
+      }
     }
     cleanSql.toString().trim
   }
@@ -268,8 +271,8 @@ object SQLExplain extends Explain {
     }
     var overLimit: Boolean = false
     var code = cmd.trim
-    if (code.toLowerCase.contains("limit")) {
-      code = code.substring(code.toLowerCase().lastIndexOf("limit")).trim
+    if (code.toLowerCase(Locale.getDefault).contains("limit")) {
+      code = code.substring(code.toLowerCase(Locale.getDefault).lastIndexOf("limit")).trim
     }
     val hasLimit = code.toLowerCase().matches("limit\\s+\\d+\\s*;?")
     if (hasLimit) {
@@ -298,9 +301,9 @@ object SQLExplain extends Explain {
     var preCode = ""
     var tailCode = ""
     var limitNum = SQL_DEFAULT_LIMIT.getValue
-    if (code.toLowerCase.contains("limit")) {
-      preCode = code.substring(0, code.toLowerCase().lastIndexOf("limit")).trim
-      tailCode = code.substring(code.toLowerCase().lastIndexOf("limit")).trim
+    if (code.toLowerCase(Locale.getDefault).contains("limit")) {
+      preCode = code.substring(0, code.toLowerCase(Locale.getDefault).lastIndexOf("limit")).trim
+      tailCode = code.substring(code.toLowerCase(Locale.getDefault).lastIndexOf("limit")).trim
     }
     if (isUpperSelect(cmd)) preCode + " LIMIT " + limitNum else preCode + " limit " + limitNum
   }
@@ -358,44 +361,48 @@ object PythonExplain extends Explain {
               IMPORT_SYS_MOUDLE
                 .findAllIn(code)
                 .nonEmpty || FROM_SYS_IMPORT.findAllIn(code).nonEmpty
-          )
+          ) {
             throw PythonCodeCheckException(20070, "can not use sys module")
-          else if (
+          } else if (
               IMPORT_OS_MOUDLE.findAllIn(code).nonEmpty || FROM_OS_IMPORT.findAllIn(code).nonEmpty
-          )
+          ) {
             throw PythonCodeCheckException(20071, "can not use os module")
-          else if (
+          } else if (
               IMPORT_PROCESS_MODULE
                 .findAllIn(code)
                 .nonEmpty || FROM_MULTIPROCESS_IMPORT.findAllIn(code).nonEmpty
-          )
+          ) {
             throw PythonCodeCheckException(20072, "can not use process module")
-          else if (SC_STOP.findAllIn(code).nonEmpty)
+          } else if (SC_STOP.findAllIn(code).nonEmpty) {
             throw PythonCodeCheckException(20073, "You can not stop SparkContext, It's dangerous")
-          else if (FROM_NUMPY_IMPORT.findAllIn(code).nonEmpty)
+          } else if (FROM_NUMPY_IMPORT.findAllIn(code).nonEmpty) {
             throw PythonCodeCheckException(20074, "Numpy packages cannot be imported in this way")
+          }
         }
       })
 
     code.split(System.lineSeparator()) foreach { code =>
-      if (IMPORT_SYS_MOUDLE.findAllIn(code).nonEmpty || FROM_SYS_IMPORT.findAllIn(code).nonEmpty)
+      if (IMPORT_SYS_MOUDLE.findAllIn(code).nonEmpty || FROM_SYS_IMPORT.findAllIn(code).nonEmpty) {
         throw PythonCodeCheckException(20070, "can not use sys module")
-      else if (IMPORT_OS_MOUDLE.findAllIn(code).nonEmpty || FROM_OS_IMPORT.findAllIn(code).nonEmpty)
+      } else if (
+          IMPORT_OS_MOUDLE.findAllIn(code).nonEmpty || FROM_OS_IMPORT.findAllIn(code).nonEmpty
+      ) {
         throw PythonCodeCheckException(20071, "can not use os moudle")
-      else if (
+      } else if (
           IMPORT_PROCESS_MODULE.findAllIn(code).nonEmpty || FROM_MULTIPROCESS_IMPORT
             .findAllIn(code)
             .nonEmpty
-      )
+      ) {
         throw PythonCodeCheckException(20072, "can not use process module")
-      else if (
+      } else if (
           IMPORT_SUBPORCESS_MODULE.findAllIn(code).nonEmpty || FROM_SUBPROCESS_IMPORT
             .findAllIn(code)
             .nonEmpty
-      )
+      ) {
         throw PythonCodeCheckException(20072, "can not use subprocess module")
-      else if (SC_STOP.findAllIn(code).nonEmpty)
+      } else if (SC_STOP.findAllIn(code).nonEmpty) {
         throw PythonCodeCheckException(20073, "You can not stop SparkContext, It's dangerous")
+      }
     }
     true
   }

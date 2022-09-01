@@ -27,7 +27,7 @@ import org.apache.linkis.scheduler.queue.Job
  */
 trait EntranceEvent extends Event {}
 
-//TODO Subsequent optimization, temporarily use this(后续优化，暂时这么用)
+// TODO Subsequent optimization, temporarily use this(后续优化，暂时这么用)
 case class EntranceJobEvent(jobId: String) extends EntranceEvent
 
 case class EntranceProgressEvent(job: Job, progress: Float, progressInfo: Array[JobProgressInfo])

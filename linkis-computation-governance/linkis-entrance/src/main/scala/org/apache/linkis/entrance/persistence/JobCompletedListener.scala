@@ -19,7 +19,7 @@ package org.apache.linkis.entrance.persistence
 
 import org.apache.linkis.scheduler.queue.Job
 
-@Deprecated
+@deprecated
 trait JobCompletedListener {
 
   def onJobCompleted(job: Job): Unit

@@ -193,8 +193,9 @@ class CommonEntranceParser(val persistenceManager: PersistenceManager)
     if (StringUtils.isBlank(submitUser)) {
       jobReq.setSubmitUser(umUser)
     }
-    if (umUser == null)
+    if (umUser == null) {
       throw new EntranceIllegalParamException(20005, "execute user can not be null")
+    }
     jobReq.setExecuteUser(umUser)
     var executionCode = params.get(TaskConstant.EXECUTIONCODE).asInstanceOf[String]
     val _params = params.get(TaskConstant.PARAMS)
@@ -209,21 +210,23 @@ class CommonEntranceParser(val persistenceManager: PersistenceManager)
       .asInstanceOf[util.Map[String, String]]
     val executeApplicationName =
       params.get(TaskConstant.EXECUTEAPPLICATIONNAME).asInstanceOf[String]
-    if (StringUtils.isEmpty(creator))
+    if (StringUtils.isEmpty(creator)) {
       creator = EntranceConfiguration.DEFAULT_REQUEST_APPLICATION_NAME.getValue
+    }
     // if (StringUtils.isEmpty(executeApplicationName)) throw new EntranceIllegalParamException(20006, "param executeApplicationName can not be empty or null")
-    /* When the execution type is IDE, executionCode and scriptPath cannot be empty at the same time*/
-    /*当执行类型为IDE的时候，executionCode和scriptPath不能同时为空*/
+    /* When the execution type is IDE, executionCode and scriptPath cannot be empty at the same time */
+    /* 当执行类型为IDE的时候，executionCode和scriptPath不能同时为空 */
     if (
         EntranceConfiguration.DEFAULT_REQUEST_APPLICATION_NAME.getValue.equals(
           creator
         ) && StringUtils.isEmpty(source.get(TaskConstant.SCRIPTPATH)) &&
         StringUtils.isEmpty(executionCode)
-    )
+    ) {
       throw new EntranceIllegalParamException(
         20007,
         "param executionCode and scriptPath can not be empty at the same time"
       )
+    }
     var runType: String = null
     if (StringUtils.isNotEmpty(executionCode)) {
       runType = params.get(TaskConstant.RUNTYPE).asInstanceOf[String]

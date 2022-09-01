@@ -137,11 +137,12 @@ class ReadCacheConsumer(
     val consumer = schedulerContext.getOrCreateConsumerManager.getOrCreateConsumer(groupName)
     val index = consumer.getConsumeQueue.offer(job)
     // index.map(getEventId(_, groupName)).foreach(job.setId)
-    if (index.isEmpty)
+    if (index.isEmpty) {
       throw new SchedulerErrorException(
         12001,
         "The submission job failed and the queue is full!(提交作业失败，队列已满！)"
       )
+    }
   }
 
 }

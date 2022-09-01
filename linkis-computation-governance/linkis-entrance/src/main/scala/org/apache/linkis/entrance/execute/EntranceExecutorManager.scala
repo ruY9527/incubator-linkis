@@ -89,14 +89,14 @@ abstract class EntranceExecutorManager(groupFactory: GroupFactory)
               warnException = warn
               None
             case t: Throwable => throw t
-          } /*match {
+          } /* match {
           case Some(e) => executor = Option(e)
           case _ =>
             if (System.currentTimeMillis - startTime < wait.toMillis) {
               val interval = math.min(3000, wait.toMillis - System.currentTimeMillis + startTime)
               //getOrCreateEngineManager().waitForIdle(interval)
             }
-        }*/
+        } */
         // todo check
         if (warnException != null && executor.isEmpty) throw warnException
         executor

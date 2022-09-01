@@ -60,9 +60,9 @@ class EntranceWebSocketService
   private val websocketTagJobID = new util.HashMap[String, String]()
 
   private val restfulURI =
-    if (ServerConfiguration.BDP_SERVER_RESTFUL_URI.getValue.endsWith("/"))
+    if (ServerConfiguration.BDP_SERVER_RESTFUL_URI.getValue.endsWith("/")) {
       ServerConfiguration.BDP_SERVER_RESTFUL_URI.getValue
-    else ServerConfiguration.BDP_SERVER_RESTFUL_URI.getValue + "/"
+    } else ServerConfiguration.BDP_SERVER_RESTFUL_URI.getValue + "/"
 
   private val executePattern = restfulURI + "entrance/execute"
   private val logUrlPattern = (restfulURI + """entrance/(.+)/log""").r
@@ -246,7 +246,7 @@ class EntranceWebSocketService
     var retMessage: Message = null
     val realID = ZuulEntranceUtils.parseExecID(id)(3)
     entranceServer.getJob(realID) foreach {
-      case entranceExecutionJob: EntranceExecutionJob => {
+      case entranceExecutionJob: EntranceExecutionJob =>
         logger.info(s"begin to get job $realID log via websocket")
         val logsArr: Array[String] = new Array[String](4)
         entranceExecutionJob.getWebSocketLogReader.foreach(logReader =>
@@ -263,7 +263,6 @@ class EntranceWebSocketService
         retMessage.setMethod(restfulURI + "entrance/" + id + "/log")
         logger.info(s"end to get job $realID log via websocket")
         return retMessage
-      }
       case _ =>
     }
     retMessage = Message.error(
@@ -293,8 +292,9 @@ class EntranceWebSocketService
           Sender.getThisInstance,
           userCreatorLabel.getCreator
         )
-        if (!jobIdToEventId.containsKey(realID) && event != null)
+        if (!jobIdToEventId.containsKey(realID) && event != null) {
           jobIdToEventId synchronized jobIdToEventId.put(realID, event.getId)
+        }
         val status = entranceExecutionJob.getState
 
         retMessage = Message.ok("Get the status of the task successfully(获取任务状态成功)")
@@ -328,7 +328,7 @@ class EntranceWebSocketService
     var retMessage: Message = null
     val realID = ZuulEntranceUtils.parseExecID(id)(3)
     entranceServer.getJob(realID) foreach {
-      case entranceExecutionJob: EntranceExecutionJob => {
+      case entranceExecutionJob: EntranceExecutionJob =>
         val progress = entranceExecutionJob.getProgress
         retMessage = Message.ok("Get the task progress successfully(获取任务进度成功)")
         val taskID = entranceExecutionJob.getJobRequest.getId
@@ -340,7 +340,6 @@ class EntranceWebSocketService
         retMessage.setStatus(0)
         retMessage.setMethod(restfulURI + "entrance/" + id + "/progress")
         return retMessage
-      }
       case _ =>
     }
     retMessage = Message.error("Get task progress failed(获取任务进度失败)")
@@ -395,7 +394,7 @@ class EntranceWebSocketService
      }else{
        dealExecute(backgroundService.get.operation(event))
      }
-   }*/
+   } */
 
   private def concatLog(length: Int, log: String, flag: StringBuilder, all: StringBuilder): Unit = {
     if (length == 1) {

@@ -104,13 +104,3 @@ object ScalaCommentHelper extends CommentHelper {
 
   override def dealComment(code: String): String = code
 }
-
-object CommentMain {
-
-  def main(args: Array[String]): Unit = {
-    val sqlCode = "select * from default.user;--你好;show tables"
-    val sqlCode1 = "select * from default.user--你好;show tables"
-    println(SQLCommentHelper.dealComment(sqlCode))
-  }
-
-}
