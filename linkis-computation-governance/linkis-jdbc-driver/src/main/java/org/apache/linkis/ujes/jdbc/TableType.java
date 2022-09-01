@@ -18,7 +18,7 @@
 package org.apache.linkis.ujes.jdbc;
 
 public enum TableType {
-    TABLE,
-    VIEW,
-    TMP_TABLE
+  TABLE,
+  VIEW,
+  TMP_TABLE
 }
