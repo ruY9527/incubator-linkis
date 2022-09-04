@@ -45,7 +45,7 @@ import java.util
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 import com.google.common.cache.{Cache, CacheBuilder}
 
@@ -200,9 +200,9 @@ object EntranceGroupFactory {
       params: util.Map[String, Any] = new util.HashMap[String, Any]
   ): String = {
 
-    val userCreator = labels.find(_.isInstanceOf[UserCreatorLabel])
-    val engineType = labels.find(_.isInstanceOf[EngineTypeLabel])
-    val concurrent = labels.find(_.isInstanceOf[ConcurrentEngineConnLabel])
+    val userCreator = labels.asScala.find(_.isInstanceOf[UserCreatorLabel])
+    val engineType = labels.asScala.find(_.isInstanceOf[EngineTypeLabel])
+    val concurrent = labels.asScala.find(_.isInstanceOf[ConcurrentEngineConnLabel])
     if (userCreator.isEmpty || engineType.isEmpty) {
       throw new EntranceErrorException(20001, "userCreator label or engineType label cannot null")
     }

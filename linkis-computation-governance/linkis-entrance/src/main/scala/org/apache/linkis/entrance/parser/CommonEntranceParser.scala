@@ -39,7 +39,6 @@ import org.apache.commons.lang3.StringUtils
 import java.util
 import java.util.Date
 
-import scala.collection.JavaConversions.mapAsScalaMap
 import scala.collection.JavaConverters._
 
 class CommonEntranceParser(val persistenceManager: PersistenceManager)
@@ -95,8 +94,9 @@ class CommonEntranceParser(val persistenceManager: PersistenceManager)
     if (executionContent.containsKey(TaskConstant.CODE)) {
       code = executionContent.get(TaskConstant.CODE).asInstanceOf[String]
       runType = executionContent.get(TaskConstant.RUNTYPE).asInstanceOf[String]
-      if (StringUtils.isEmpty(code))
+      if (StringUtils.isEmpty(code)) {
         throw new EntranceIllegalParamException(20007, "param executionCode can not be empty ")
+      }
     } else {
       // todo check
       throw new EntranceIllegalParamException(20010, "Only code with runtype supported !")
@@ -125,7 +125,7 @@ class CommonEntranceParser(val persistenceManager: PersistenceManager)
   }
 
   private def checkEngineTypeLabel(labels: util.Map[String, Label[_]]): Unit = {
-    val engineTypeLabel = labels.getOrElse(LabelKeyConstant.ENGINE_TYPE_KEY, null)
+    val engineTypeLabel = labels.asScala.getOrElse(LabelKeyConstant.ENGINE_TYPE_KEY, null)
     if (null == engineTypeLabel) {
       val msg = s"You need to specify engineTypeLabel in labels, such as spark-2.4.3"
       throw new EntranceIllegalParamException(
@@ -145,7 +145,7 @@ class CommonEntranceParser(val persistenceManager: PersistenceManager)
       runType: String,
       labels: util.Map[String, Label[_]]
   ): Unit = {
-    val engineRunTypeLabel = labels.getOrElse(LabelKeyConstant.CODE_TYPE_KEY, null)
+    val engineRunTypeLabel = labels.asScala.getOrElse(LabelKeyConstant.CODE_TYPE_KEY, null)
     if (StringUtils.isBlank(runType) && null == engineRunTypeLabel) {
       val msg = s"You need to specify runType in execution content, such as sql"
       logger.warn(msg)
@@ -171,7 +171,7 @@ class CommonEntranceParser(val persistenceManager: PersistenceManager)
       executeUser: String,
       labels: util.Map[String, Label[_]]
   ): Unit = {
-    var userCreatorLabel = labels
+    var userCreatorLabel = labels.asScala
       .getOrElse(LabelKeyConstant.USER_CREATOR_TYPE_KEY, null)
       .asInstanceOf[UserCreatorLabel]
     if (null == userCreatorLabel) {
