@@ -78,7 +78,7 @@ public class FsRestfulApiTest {
       Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
           .thenReturn(fs);
 
-      String path = this.getClass().getResource("/").getPath();
+      String path = this.getClass().getResource("/").getPath() + "hadoops";
       Map<String, String> param = new HashMap<>();
       param.put("path", path);
 
