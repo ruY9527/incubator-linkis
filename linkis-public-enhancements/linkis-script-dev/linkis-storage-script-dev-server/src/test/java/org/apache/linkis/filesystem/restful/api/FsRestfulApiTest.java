@@ -78,7 +78,7 @@ public class FsRestfulApiTest {
       Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
           .thenReturn(fs);
 
-      String path = this.getClass().getResource("/").getPath() + "/hadoop";
+      String path = this.getClass().getResource("/").getPath();
       Map<String, String> param = new HashMap<>();
       param.put("path", path);
 
@@ -158,7 +158,7 @@ public class FsRestfulApiTest {
       fs.setUser("hadoop");
       Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
           .thenReturn(fs);
-      String path = this.getClass().getResource("/").getPath() + "/query.sql";
+      String path = this.getClass().getResource("/").getPath() + "query.sql";
 
       MvcResult mvcResult =
           mockMvc
@@ -185,7 +185,7 @@ public class FsRestfulApiTest {
       fs.setUser("hadoop");
       Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
           .thenReturn(fs);
-      String path = this.getClass().getResource("/").getPath() + "/query.sql";
+      String path = this.getClass().getResource("/").getPath() + "query.sql";
 
       MvcResult mvcResult =
           mockMvc
