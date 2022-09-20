@@ -87,7 +87,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
       Map<String, String> param = new HashMap<>();
       param.put("path", path);
 
@@ -115,31 +115,32 @@ public class FsRestfulApiTest {
   @DisplayName("getDirFileTreesTest")
   public void getDirFileTreesTest() throws Exception {
 
-   if(!FsPath.WINDOWS){
-     FileSystem fs = new LocalFileSystem();
-     fs.setUser("hadoop");
-     Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
-             .thenReturn(fs);
-     String path = this.getClass().getResource("/").getPath();
-     String group =
-             Files.readAttributes(
-                     Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
-                     .group()
-                     .getName();
-     fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
-     MvcResult mvcResult =
-             mockMvc
-                     .perform(get("/filesystem/getDirFileTrees").param("path", path))
-                     .andExpect(status().isOk())
-                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                     .andReturn();
+    if (!FsPath.WINDOWS) {
+      FileSystem fs = new LocalFileSystem();
+      fs.setUser("hadoop");
+      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
+          .thenReturn(fs);
+      String path = this.getClass().getResource("/").getPath();
+      String group =
+          Files.readAttributes(
+                  Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
+              .group()
+              .getName();
+      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
+      MvcResult mvcResult =
+          mockMvc
+              .perform(get("/filesystem/getDirFileTrees").param("path", path))
+              .andExpect(status().isOk())
+              .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+              .andReturn();
 
-     Message res =
-             JsonUtils.jackson().readValue(mvcResult.getResponse().getContentAsString(), Message.class);
+      Message res =
+          JsonUtils.jackson()
+              .readValue(mvcResult.getResponse().getContentAsString(), Message.class);
 
-     assertEquals(MessageStatus.SUCCESS(), res.getStatus());
-     LOG.info(mvcResult.getResponse().getContentAsString());
-   }
+      assertEquals(MessageStatus.SUCCESS(), res.getStatus());
+      LOG.info(mvcResult.getResponse().getContentAsString());
+    }
   }
 
   @Test
@@ -177,11 +178,11 @@ public class FsRestfulApiTest {
       String path = this.getClass().getResource("/").getPath() + "query.sql";
 
       String group =
-              Files.readAttributes(
-                      Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
-                      .group()
-                      .getName();
-      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+          Files.readAttributes(
+                  Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
+              .group()
+              .getName();
+      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
 
       MvcResult mvcResult =
           mockMvc
@@ -215,7 +216,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
 
       MvcResult mvcResult =
           mockMvc
@@ -249,7 +250,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
 
       MvcResult mvcResult =
           mockMvc
