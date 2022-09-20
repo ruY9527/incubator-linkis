@@ -77,7 +77,7 @@ public class FsRestfulApiTest {
 
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
-      fs.setUser("hadoop");
+      fs.setUser("docker");
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
@@ -119,7 +119,7 @@ public class FsRestfulApiTest {
 
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
-      fs.setUser("hadoop");
+      fs.setUser("docker");
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
@@ -152,7 +152,7 @@ public class FsRestfulApiTest {
   public void isExistTest() throws Exception {
 
     FileSystem fs = new LocalFileSystem();
-    fs.setUser("hadoop");
+    fs.setUser("docker");
     Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
         .thenReturn(fs);
     String path = this.getClass().getResource("/").getPath();
@@ -176,7 +176,7 @@ public class FsRestfulApiTest {
   public void fileInfoTest() throws Exception {
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
-      fs.setUser("hadoop");
+      fs.setUser("docker");
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
@@ -209,7 +209,7 @@ public class FsRestfulApiTest {
 
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
-      fs.setUser("hadoop");
+      fs.setUser("docker");
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
@@ -243,7 +243,7 @@ public class FsRestfulApiTest {
 
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
-      fs.setUser("hadoop");
+      fs.setUser("docker");
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
