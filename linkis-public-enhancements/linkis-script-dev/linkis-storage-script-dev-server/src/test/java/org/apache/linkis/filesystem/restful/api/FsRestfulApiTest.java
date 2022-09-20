@@ -72,48 +72,6 @@ public class FsRestfulApiTest {
   private FsService fsService;
 
   @Test
-  @DisplayName("createNewDirTest")
-  public void createNewDirTest() throws Exception {
-
-    if (!FsPath.WINDOWS) {
-      FileSystem fs = new LocalFileSystem();
-      fs.setUser("docker");
-      String group =
-          Files.readAttributes(
-                  Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
-              .group()
-              .getName();
-      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
-
-      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
-          .thenReturn(fs);
-
-      String path = this.getClass().getResource("/").getPath() + "hadoops";
-
-      Map<String, String> param = new HashMap<>();
-      param.put("path", path);
-
-      // assertThrows pass, the error message: Request processing failed; nested exception is
-      // java.lang.UnsupportedOperationException
-      MvcResult mvcResult =
-          mockMvc
-              .perform(
-                  post("/filesystem/createNewDir")
-                      .content(new Gson().toJson(param))
-                      .contentType(MediaType.APPLICATION_JSON))
-              .andExpect(status().isOk())
-              .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-              .andReturn();
-      Message res =
-          JsonUtils.jackson()
-              .readValue(mvcResult.getResponse().getContentAsString(), Message.class);
-
-      assertEquals(MessageStatus.SUCCESS(), res.getStatus());
-      LOG.info(mvcResult.getResponse().getContentAsString());
-    }
-  }
-
-  @Test
   @DisplayName("getDirFileTreesTest")
   public void getDirFileTreesTest() throws Exception {
 
