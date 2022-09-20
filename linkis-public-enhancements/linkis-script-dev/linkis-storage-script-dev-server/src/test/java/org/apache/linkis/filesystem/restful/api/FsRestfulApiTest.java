@@ -87,7 +87,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
+      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
       Map<String, String> param = new HashMap<>();
       param.put("path", path);
 
@@ -126,7 +126,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
+      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
       MvcResult mvcResult =
           mockMvc
               .perform(get("/filesystem/getDirFileTrees").param("path", path))
@@ -182,7 +182,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
+      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
 
       MvcResult mvcResult =
           mockMvc
@@ -216,7 +216,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
+      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
 
       MvcResult mvcResult =
           mockMvc
@@ -250,7 +250,7 @@ public class FsRestfulApiTest {
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
-      fs.setOwner(new FsPath(this.getClass().getResource("/").getPath()), "hadoop", group);
+      fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
 
       MvcResult mvcResult =
           mockMvc
