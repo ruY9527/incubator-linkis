@@ -461,6 +461,9 @@ public class LocalFileSystem extends FileSystem {
       return true;
     }
     String pathGroup = attr.group().getName();
+    LOG.info("pathGroup is ---> {} " , pathGroup);
+    LOG.info("user is ---> {} ", user);
+    LOG.info("group is ---> {} " , group);
     if ((pathGroup.equals(user) || group.contains(pathGroup))
         && permissions.contains(groupPermission)) {
       return true;
