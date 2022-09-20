@@ -78,16 +78,18 @@ public class FsRestfulApiTest {
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
       fs.setUser("hadoop");
-      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
-          .thenReturn(fs);
-
-      String path = this.getClass().getResource("/").getPath() + "hadoops";
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
       fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+
+      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
+          .thenReturn(fs);
+
+      String path = this.getClass().getResource("/").getPath() + "hadoops";
+
       Map<String, String> param = new HashMap<>();
       param.put("path", path);
 
@@ -118,15 +120,17 @@ public class FsRestfulApiTest {
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
       fs.setUser("hadoop");
-      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
-          .thenReturn(fs);
-      String path = this.getClass().getResource("/").getPath();
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
       fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+
+      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
+          .thenReturn(fs);
+      String path = this.getClass().getResource("/").getPath();
+
       MvcResult mvcResult =
           mockMvc
               .perform(get("/filesystem/getDirFileTrees").param("path", path))
@@ -173,16 +177,15 @@ public class FsRestfulApiTest {
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
       fs.setUser("hadoop");
-      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
-          .thenReturn(fs);
-      String path = this.getClass().getResource("/").getPath() + "query.sql";
-
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
       fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
+          .thenReturn(fs);
+      String path = this.getClass().getResource("/").getPath() + "query.sql";
 
       MvcResult mvcResult =
           mockMvc
@@ -207,16 +210,16 @@ public class FsRestfulApiTest {
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
       fs.setUser("hadoop");
-      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
-          .thenReturn(fs);
-      String path = this.getClass().getResource("/").getPath() + "query.sql";
-
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
       fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+
+      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
+          .thenReturn(fs);
+      String path = this.getClass().getResource("/").getPath() + "query.sql";
 
       MvcResult mvcResult =
           mockMvc
@@ -241,16 +244,16 @@ public class FsRestfulApiTest {
     if (!FsPath.WINDOWS) {
       FileSystem fs = new LocalFileSystem();
       fs.setUser("hadoop");
-      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
-          .thenReturn(fs);
-      String path = this.getClass().getResource("/").getPath() + "info.log";
-
       String group =
           Files.readAttributes(
                   Paths.get(this.getClass().getResource("/").getPath()), PosixFileAttributes.class)
               .group()
               .getName();
       fs.setGroup(new FsPath(this.getClass().getResource("/").getPath()), group);
+
+      Mockito.when(fsService.getFileSystem(Mockito.anyString(), Mockito.any(FsPath.class)))
+          .thenReturn(fs);
+      String path = this.getClass().getResource("/").getPath() + "info.log";
 
       MvcResult mvcResult =
           mockMvc
